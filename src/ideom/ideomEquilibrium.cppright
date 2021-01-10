@@ -1,0 +1,60 @@
+/**
+ * git clone https://github.com/hou-dao/deom.git
+ * ---
+ * Written by Houdao Zhang 
+ * mailto: houdao@connect.ust.hk
+ */
+#include <cstdio>
+#include <cstdlib>
+#include "ideom.hpp"
+
+void ideom::equilibrium (cx_cube& ddos, const double dt, const double err, const int nk) {
+
+    if (nddo != 1) {
+        printf("Warning: Hidx is not correctly initialized!\n");
+    }
+
+    //ddos.zeros();
+    //ddos.slice(0) = deom_c1*eye<mat>(nsys,nsys);
+    //cx_cube ddos = zeros<cx_cube>(d.nsys,d.nsys,d.nmax);
+    mat eham = expmat_sym(-real(ham1)/temperature);
+    ddos.slice(0) = eham/trace(eham)*deom_c1;
+
+
+    const int nt = floor(1.0/(temperature*dt));
+    //const double nt = 1.0/temperature*dt;
+
+    double za = 1.0;
+    // Imaginary-time propagation
+    //double tau = 0;
+    FILE *fs = fopen("rhot_img.log","w");
+    for (int it=0; it<nt; ++it) {
+        double tau = it*dt;
+        if (it%nk == 0) {
+            double ztmp = 1.0/real(trace(ddos.slice(0)));
+            za /= ztmp;
+            ddos.head_slices(nddo) *= ztmp;
+            printf ("Propagation %5.1f%%: nddo=%6d, lddo=%3d\n",
+                    100*it/static_cast<double>(nt), nddo, lddo);
+            fprintf(fs,"%16.6e",tau);
+            for (int i=0; i<nsys; ++i) {
+                fprintf(fs,"%16.6e",real(ddos(i,i,0)));
+            }
+            fprintf(fs,"\n");
+        }
+        rk4 (ddos,tau,dt);
+        //tau += dt;
+    }
+    fclose(fs);
+
+    double ztmp = 1.0/real(trace(ddos.slice(0)));
+    za /= ztmp;
+    ddos.head_slices(nddo) *= ztmp;
+    // partition function
+    fs = fopen("za.dat","w");
+    fprintf (fs, "%16.6e%20.10e\n", 1.0/temperature, za);
+    fclose(fs);
+    
+    // save rho0
+    ddos.slice(0).save("rho0.imag",raw_ascii);
+}

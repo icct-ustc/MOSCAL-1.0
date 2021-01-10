@@ -1,0 +1,99 @@
+/**
+ * git clone https://github.com/hou-dao/deom.git
+ * ---
+ * Written by Houdao Zhang 
+ * mailto: houdao@connect.ust.hk
+ */
+ 
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <sstream>
+#include "deom.hpp"
+
+static void rate (deom& d, const double dt, const int nt, const int nk, const ivec& projection) {
+
+    const int nsys = d.nsys;
+    cx_cube rho1(nsys,nsys,d.nmax);
+    cx_cube rho2(nsys,nsys,d.nmax);
+    cx_cube rho3(nsys,nsys,d.nmax);
+    mat     k0(nsys,nsys);
+
+    for (int si=0; si<nsys; ++si) {
+        if (projection(si) != 0) {
+            // Initial
+            rho1.zeros();
+            rho1(si,si,0) = 1.0;
+            d.rem (rho2,rho1,0.0,projection);
+            // Sum-over-expansion
+            int nord = 1;
+            cx_cube& rhoL = rho3;
+            cx_cube& rhoR = rho1;
+            do {
+                const int nsav1 = d.nddo;
+                rhoL = rho3;
+                rhoR = rho1;
+                rhoR.slices(0,nsav1-1) = rho2.slices(0,nsav1-1);
+                for (int i=0; i<nord; ++i) {
+                    const int nsav2 = d.nddo;
+                    d.rem (rhoL,rhoR,0.0,projection);
+                    rhoL.slices(0,nsav2-1) += rhoR.slices(0,nsav2-1);
+                    if (i%2 == 0) {
+                        rhoL = rho1;
+                        rhoR = rho3;
+                    } else {
+                        rhoL = rho3;
+                        rhoR = rho1;
+                    }
+                }
+                printf ("Rate0: nord = %d\n", nord);
+                rhoR.slice(0).print("rhoR");
+                rho2.slices(0,nsav1-1) += rhoR.slices(0,nsav1-1);
+                if (d.nddo > nsav1) {
+                    rho2.slices(nsav1,d.nddo) += rhoR.slices(nsav1,d.nddo);
+                }
+                d.filter(rho2);
+                nord *= 2;
+            } while (d.is_valid(rhoR.slice(0)) && nord<8192);
+            // End
+            d.rem (rho1,rho2,0.0);
+            for (int sf=0; sf<nsys; ++sf) {
+                k0(sf,si) = -real(rho1(sf,sf,0));
+            }
+        }
+    }
+    k0.print ("RateConstant:");
+    k0.save ("RateConstant", raw_ascii);
+}
+
+int main () {
+
+    ifstream jsonFile("input.json");
+    stringstream strStream;
+    strStream << jsonFile.rdbuf();
+    string jsonStr = strStream.str();
+    string err;
+
+    const Json json = Json::parse(jsonStr,err);
+    if (!err.empty()) {
+        printf ("Error in parsing input file: %s\n", err.c_str());
+        return 0;
+    }
+
+    deom d(json["deom"]);
+
+    const double dt = json["rate"]["dt"].number_value();
+    const int nt = json["rate"]["nt"].int_value();
+    const int nk = json["rate"]["nk"].int_value();
+    const string projFile = json["rate"]["projFile"].string_value();
+    ivec proj;
+    if (proj.load (projFile, arma_ascii)) {
+        proj.print(projFile);
+    } else {
+        printf("Fail to load proj");
+    }
+
+    rate (d, dt, nt, nk, proj);
+
+    return 0;
+}

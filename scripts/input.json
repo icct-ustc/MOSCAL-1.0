@@ -1,0 +1,22 @@
+{
+    "pade": 1, 
+    "etarFile": "inp_etar.mat", 
+    "delrFile": "inp_delr.mat", 
+    "nlfd": 3, 
+    "etalFile": "inp_etal.mat", 
+    "temp": 0.001, 
+    "etaaFile": "inp_etaa.mat", 
+    "expnFile": "inp_expn.mat", 
+    "npsd": 10, 
+    "jomg": [
+        {
+            "jdru": [
+                [
+                    1.0, 
+                    1.0
+                ]
+            ]
+        }
+    ], 
+    "modeFile": "inp_mode.mat"
+}
