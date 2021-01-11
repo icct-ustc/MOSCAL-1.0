@@ -1,2 +1,2 @@
-# HASSIM
-Hefei Ab-initio Spectroscopy SIMulator
+  # MUSSIM
+MUltiscale Spectroscopy SIMulator
