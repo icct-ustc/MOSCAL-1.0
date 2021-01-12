@@ -17,58 +17,26 @@ static void corr (const int& nt, const double& dt, const double& staticErr, cons
     deom d1(s,b,h);
 
     cx_cube rho0 = zeros<cx_cube>(d1.nsys,d1.nsys,d1.nmax);
-    //cx_cube rho1 = zeros<cx_cube>(d1.nsys,d1.nsys,d1.nmax);
 
-    const mat& exph= expmat(-real(d1.ham1)/d1.temperature);
-    rho0.slice(0).set_real(exph/trace(exph));
-    // rho1.slice(0)(0,0)=1;
-    d1.equilibrium (rho0,dt,staticErr,nk,"SCI2"); // last add SCI2 paowentai
+    //const mat& exph= expmat(-real(d1.ham1)/d1.temperature);
+    //rho0.slice(0).set_real(exph/trace(exph)); 
+    rho0(0,0,0)=1; 
+    //rho0.slice(0)(0,0)=1;
+
     
-	printf("Equilibrium pop:");
-    for (int i=0; i<d1.nsys; ++i) {
-        printf("%16.6e", real(rho0(i,i,0)));
-    }
-    printf("\n");
 
-    // cx_vec ft = zeros<cx_vec>(nt);
-    cx_vec ft = zeros<cx_vec>(1); // 非向量
-    // \mu\rho
-    // d1.oprAct(rho1,sdip,pdip,bdip,rho0,'r'); // remove 1st
-    // iTr[\mu G(t)\mu\rho]
-    FILE *log_t = fopen("AT1d-corr.dat","w");
-    // for (int it=0; it<nt; ++it) {
-        // double t = it*dt;
+    cx_vec ft = zeros<cx_vec>(nt);
+
+    FILE *log_t = fopen("At1d-corr.dat","w");
+    for (int it=0; it<nt; ++it) {
+        double t = it*dt;
 		// cout << "hello\n";exit(0);
-        // ft(it) = d1.Trace(sdip,pdip,bdip,rho1);
-        ft(0) = d1.Trace(sdip,pdip,bdip,rho0);
-	    // printf ("In 1d-correlation: it=%d, nddo=%d, lddo=%d\n", it, d1.nddo, d1.lddo);
-        printf ("In 1d-correlation: nddo=%d, lddo=%d\n", d1.nddo, d1.lddo);
-		// fprintf(log_t, "%16.6e%16.6e%16.6e\n", t/deom_fs2unit, real(ft(it)), imag(ft(it)));
-        fprintf(log_t, "%16.6lf%16.6lf\n", real(ft(0)), imag(ft(0)));
-		// d1.rk4 (rho1,t,dt);
-    // }
+        ft(it) = d1.Trace(sdip,pdip,bdip,rho0);
+        printf ("In 1d-correlation: it=%d, nddo=%d, lddo=%d\n", it, d1.nddo, d1.lddo);
+        fprintf(log_t, "%16.6e%16.6e%16.6e\n", t/deom_fs2unit, real(ft(it)), imag(ft(it)));
+        d1.rk4 (rho0,t,dt);
+    }
     fclose(log_t);
-
-    // 1D FFT
-	
-	/*
-    ft(0) *= 0.5;
-    const double dw = 2.0*deom_pi/(nt*dt);
-    const cx_vec& fw = ifft(ft)*nt*dt;
-    
-    FILE *log_w = fopen("1d-corr-w.dat","w");
-    for (int iw=nt/2; iw<nt; ++iw) {
-        double w = (iw-nt)*dw/deom_cm2unit;
-        fprintf(log_w, "%16.6e%16.6e%16.6e\n", w, real(fw(iw)), imag(fw(iw)));
-    }
-    for (int iw=0; iw<nt/2; ++iw) {
-        double w = iw*dw/deom_cm2unit;
-        fprintf(log_w, "%16.6e%16.6e%16.6e\n", w, real(fw(iw)), imag(fw(iw)));
-    }
-    fclose(log_w);
-
-    printf("fw(0) = %16.6e  +%16.6eI\n", real(fw(0)), imag(fw(0)));
-	*/
 }
 
 int main () {
