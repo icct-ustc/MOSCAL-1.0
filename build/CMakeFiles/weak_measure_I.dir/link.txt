@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 -g -Wall -Ofast -march=native  -rdynamic CMakeFiles/weak_measure_I.dir/src/apps/weak_measure_I.cpp.o  -o ../bin/weak_measure_I   -L/home/dhem/deom_git/HASSIM/lib  -Wl,-rpath,/home/dhem/deom_git/HASSIM/lib -ljson11 -lopenblas -llapack -larmadillo ../lib/libdeom.a ../lib/libblockdeom.a ../lib/libdeom2.a ../lib/libideom.a ../lib/libblockdeom2.a 

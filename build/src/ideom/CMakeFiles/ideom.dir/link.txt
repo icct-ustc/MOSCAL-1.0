@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libideom.a  CMakeFiles/ideom.dir/ideomEquilibrium.cpp.o CMakeFiles/ideom.dir/ideomRem.cpp.o
+/usr/bin/ranlib ../../../lib/libideom.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libdeom.a  CMakeFiles/deom.dir/deomAlgebra.cpp.o CMakeFiles/deom.dir/deomEqSolverKrylov.cpp.o CMakeFiles/deom.dir/deomEqSolverProp.cpp.o CMakeFiles/deom.dir/deomEqSolverSCI1.cpp.o CMakeFiles/deom.dir/deomEqSolverSCI2.cpp.o CMakeFiles/deom.dir/deomEqSolverSCI3.cpp.o CMakeFiles/deom.dir/deomKrylov.cpp.o CMakeFiles/deom.dir/deomPropagation.cpp.o CMakeFiles/deom.dir/deomRem.cpp.o CMakeFiles/deom.dir/resp1st.cpp.o CMakeFiles/deom.dir/resp2nd.cpp.o CMakeFiles/deom.dir/resp3rd.cpp.o CMakeFiles/deom.dir/respPcc.cpp.o
+/usr/bin/ranlib ../../../lib/libdeom.a

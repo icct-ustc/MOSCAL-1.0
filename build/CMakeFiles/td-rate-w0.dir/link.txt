@@ -1,0 +1,1 @@
+/usr/bin/c++  -std=c++11 -g -Wall -Ofast -march=native  -rdynamic CMakeFiles/td-rate-w0.dir/src/apps/td-rate-w0.cpp.o  -o ../bin/td-rate-w0   -L/home/dhem/deom_git/HASSIM/lib  -Wl,-rpath,/home/dhem/deom_git/HASSIM/lib -ljson11 -lopenblas -llapack -larmadillo ../lib/libdeom.a ../lib/libblockdeom.a ../lib/libdeom2.a ../lib/libideom.a ../lib/libblockdeom2.a 
