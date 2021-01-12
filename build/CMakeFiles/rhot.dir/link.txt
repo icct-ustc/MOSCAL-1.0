@@ -1,1 +1,0 @@
-/usr/bin/c++  -std=c++11 -g -Wall -Ofast -march=native  -rdynamic CMakeFiles/rhot.dir/src/apps/rhot.cpp.o  -o ../bin/rhot   -L/home/dhem/deom_git/HASSIM/lib  -Wl,-rpath,/home/dhem/deom_git/HASSIM/lib -ljson11 -lopenblas -llapack -larmadillo ../lib/libdeom.a ../lib/libblockdeom.a ../lib/libdeom2.a ../lib/libideom.a ../lib/libblockdeom2.a 

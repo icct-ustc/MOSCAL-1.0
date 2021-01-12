@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../lib/libblockdeom.a  CMakeFiles/blockdeom.dir/blockdeomAlgebra.cpp.o CMakeFiles/blockdeom.dir/blockdeomEqSolverProp.cpp.o CMakeFiles/blockdeom.dir/blockdeomEqSolverSCI3.cpp.o CMakeFiles/blockdeom.dir/blockdeomPropagation.cpp.o CMakeFiles/blockdeom.dir/blockdeomRem.cpp.o CMakeFiles/blockdeom.dir/corr1stLA.cpp.o CMakeFiles/blockdeom.dir/corr1stSE.cpp.o CMakeFiles/blockdeom.dir/corr3rdK3.cpp.o CMakeFiles/blockdeom.dir/corr3rdPP-monomer.cpp.o CMakeFiles/blockdeom.dir/corr3rdPP.cpp.o
-/usr/bin/ranlib ../../../lib/libblockdeom.a

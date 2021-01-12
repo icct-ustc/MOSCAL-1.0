@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../lib/libblockdeom2.a  CMakeFiles/blockdeom2.dir/blockdeom2Algebra.cpp.o CMakeFiles/blockdeom2.dir/blockdeom2Propagation.cpp.o CMakeFiles/blockdeom2.dir/blockdeom2Rem.cpp.o CMakeFiles/blockdeom2.dir/corr3rdPP2-monomer.cpp.o
-/usr/bin/ranlib ../../../lib/libblockdeom2.a

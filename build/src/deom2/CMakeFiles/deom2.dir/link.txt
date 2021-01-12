@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../lib/libdeom2.a  CMakeFiles/deom2.dir/deomAlgebra2.cpp.o CMakeFiles/deom2.dir/deomEqSolverProp2.cpp.o CMakeFiles/deom2.dir/deomRem2.cpp.o CMakeFiles/deom2.dir/resp1st2.cpp.o
-/usr/bin/ranlib ../../../lib/libdeom2.a
