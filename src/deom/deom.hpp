@@ -16,7 +16,6 @@
 #include "deomPulse.hpp"
 #include "deomSyst.hpp"
 
-
 using namespace std;
 using namespace arma;
 

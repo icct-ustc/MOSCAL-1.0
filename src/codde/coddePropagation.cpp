@@ -4,24 +4,25 @@
  * Written by Houdao Zhang 
  * mailto: houdao@connect.ust.hk
  */
+#include "codde.hpp"
 #include <cstdio>
 #include <cstdlib>
-#include "codde.hpp"
 
-void codde::propagation (cx_cube& ddos, const double dt, const int nt, const int nk) {
 
-    FILE *frho = fopen("propagation.log","w");
-    for (int it=0; it<nt; ++it) {
-        const double t = it*dt;
-        printf ("Propagation %5.1f%%\n", 100*it/static_cast<double>(nt));
-        if (it%nk == 0) {
-            fprintf (frho, "%16.6e", t/deom_fs2unit);
-            for (int i=0; i<nsys; ++i) {
-                fprintf (frho, "%16.6e", real(ddos(i,i,0)));
-            }
-            fprintf (frho, "\n");
-        }
-        rk4 (ddos,t,dt);
+void codde::propagation(cx_cube &ddos, const double dt, const int nt, const int nk) {
+
+  FILE *frho = fopen("propagation.log", "w");
+  for (int it = 0; it < nt; ++it) {
+    const double t = it * dt;
+    printf("Propagation %5.1f%%\n", 100 * it / static_cast<double>(nt));
+    if (it % nk == 0) {
+      fprintf(frho, "%16.6e", t / deom_fs2unit);
+      for (int i = 0; i < nsys; ++i) {
+        fprintf(frho, "%16.6e", real(ddos(i, i, 0)));
+      }
+      fprintf(frho, "\n");
     }
-    fclose (frho);
+    rk4(ddos, t, dt);
+  }
+  fclose(frho);
 }
