@@ -1,2 +1,2 @@
-  # MUSSIM-1.0
-MUltiscale Spectroscopy SIMulator 1.0
+  # MOSCAL-1.0
+Multiscale-Oriented Spectroscopy CALculator 1.0
